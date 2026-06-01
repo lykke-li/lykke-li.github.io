@@ -5,15 +5,45 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Yuke Li</title>
+    <meta name="description"
+        content="Yuke Li — Ph.D. candidate at UC Merced (PADSYS Lab). Research in HPC communication, RDMA, and DPUs." />
     <link rel="icon" type="image/png" href="yli.jpeg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet" />
     <style>
         :root {
             --accent: #e37222;
             --link: #18528b;
             --bg: #f9fafb;
+            --surface: #ffffff;
             --text: #111;
             --muted: #666;
+            --border: #e6e8eb;
+            --badge-bg: #fdf0e6;
+            --badge-text: #b85a18;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --accent: #f2933f;
+                --link: #6fb3e6;
+                --bg: #0f1115;
+                --surface: #171a21;
+                --text: #e7e9ee;
+                --muted: #9aa1ad;
+                --border: #2a2f3a;
+                --badge-bg: #2a2018;
+                --badge-text: #f2933f;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
         }
 
         body {
@@ -22,11 +52,14 @@
             color: var(--text);
             margin: 0;
             padding: 0;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
         a {
             color: var(--link);
             text-decoration: none;
+            transition: color 0.15s ease;
         }
 
         a:hover {
@@ -34,96 +67,155 @@
         }
 
         .container {
-            max-width: 900px;
+            max-width: 880px;
             margin: 0 auto;
-            padding: 2rem 1.25rem;
+            padding: 2.5rem 1.25rem 1rem;
         }
 
-        .profile {
+        /* ---- Top navigation ---- */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: color-mix(in srgb, var(--bg) 85%, transparent);
+            backdrop-filter: saturate(180%) blur(8px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav .nav-inner {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 0.75rem 1.25rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        nav a {
+            color: var(--muted);
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        /* ---- Profile header ---- */
+        header.profile {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             gap: 2rem;
             flex-wrap: wrap;
+            margin-bottom: 1rem;
         }
 
         .bio {
             flex: 1;
-            min-width: 250px;
+            min-width: 260px;
         }
 
         .headshot img {
-            max-height: 140px;
-            border-radius: 8px;
-        }
-
-
-        header {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        header img {
-            max-height: 140px;
-            border-radius: 8px;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
         }
 
         h1 {
-            font-size: 1.45rem;
+            font-size: 1.7rem;
             font-weight: 700;
-            margin: 0 0 0.5rem 0;
+            margin: 0 0 0.6rem 0;
+            letter-spacing: -0.01em;
         }
-
 
         h2 {
             color: var(--accent);
-            font-size: 1.5rem;
+            font-size: 1.4rem;
             margin-top: 2.5rem;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 0.25rem;
+            margin-bottom: 1rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid var(--border);
+            scroll-margin-top: 4rem;
         }
 
         p {
             margin: 0.5rem 0;
         }
 
+        .links {
+            margin-top: 0.9rem;
+            font-weight: 700;
+        }
+
+        /* ---- Papers ---- */
         .section ul {
-            list-style-type: none;
+            list-style: none;
             padding-left: 0;
+            margin: 0;
         }
 
         .section li {
-            margin-bottom: 1.75rem;
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.6rem;
         }
 
         .papertitle {
-            font-weight: 600;
+            display: inline-block;
+            min-width: 170px;
+            flex-shrink: 0;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            color: var(--badge-text);
+            background: var(--badge-bg);
+            padding: 0.18rem 0.5rem;
+            border-radius: 5px;
+            align-self: flex-start;
+            text-align: center;
+        }
+
+        .paperinfo {
+            flex: 1;
         }
 
         em {
-            color: darkred;
+            color: #c0392b;
+            font-style: normal;
+            font-weight: 700;
         }
 
+        @media (prefers-color-scheme: dark) {
+            em {
+                color: #ff7a6b;
+            }
+        }
+
+        /* ---- Entries (experience / service / awards) ---- */
         .entry {
             display: flex;
-            gap: 2rem;
-            margin-bottom: 1rem;
+            gap: 1.5rem;
+            margin-bottom: 0.9rem;
+            align-items: baseline;
         }
 
         .entry span {
-            min-width: 160px;
+            min-width: 170px;
+            flex-shrink: 0;
             color: var(--muted);
+            font-size: 0.95rem;
         }
 
         footer {
             text-align: center;
             margin-top: 3rem;
-            padding: 1rem 0;
-            font-size: 14px;
-            color: #777;
+            padding: 1.25rem 0;
+            font-size: 0.85rem;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
         }
 
         .hidden {
@@ -131,17 +223,26 @@
         }
 
         @media (max-width: 600px) {
-            header {
-                flex-direction: column;
+            header.profile {
+                flex-direction: column-reverse;
                 align-items: flex-start;
             }
 
             .entry {
                 flex-direction: column;
-                gap: 0.5rem;
+                gap: 0.2rem;
             }
 
             .entry span {
+                min-width: unset;
+            }
+
+            .section li {
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+
+            .papertitle {
                 min-width: unset;
             }
         }
@@ -149,18 +250,26 @@
 </head>
 
 <body>
+    <nav>
+        <div class="nav-inner">
+            <a href="#papers">Papers</a>
+            <a href="#experience">Experience</a>
+            <a href="#service">Service</a>
+        </div>
+    </nav>
+
     <div class="container">
         <header class="profile">
             <div class="bio">
                 <h1>Yuke Li</h1>
-                <p>Ph.D. candidate at <a href="https://padsys.org/index.html">PADSYS Lab</a>, University of California,
+                <p>I'm a last-year Ph.D. student at <a href="https://padsys.org/index.html">PADSYS Lab</a>, University of California,
                     Merced<br />
                     Advisor: <a href="https://sites.ucmerced.edu/luxi">Dr. Xiaoyi Lu</a></p>
                 <p>M.S. in HPC with Data Science, University of Edinburgh (EPCC)<br />
                     B.E. in Software Engineering, Sun Yat-sen University</p>
                 <p>I'm interested in HPC Communication (e.g., MPI, NCCL), RDMA, and DPU.</p>
                 <p>Email: yli304[at]ucmerced.edu</p>
-                <p>
+                <p class="links">
                     <a href="https://github.com/lykke-li">GitHub</a> &nbsp;|&nbsp;
                     <a href="https://scholar.google.com/citations?user=bq3lKcYAAAAJ&hl=en">Google Scholar</a>
                 </p>
@@ -170,74 +279,99 @@
             </div>
         </header>
 
-
         <section class="section">
-            <h2>Papers</h2>
+            <h2 id="papers">Papers</h2>
             <ul>
-                <li><span class="papertitle">[HPDC '25]</span> DPU-KV: On the Benefits of DPU Offloading for In-Memory
-                    Key-Value Stores at the Edge<br>
-                    Arjun Kashyap, <strong>Yuke Li</strong>, Xiaoyi Lu<br>
-                    [<a href="#">To Appear</a>]
+                <li><span class="papertitle">HPDC '26</span>
+                    <div class="paperinfo">When RDMA Goes Long-Haul: Characterization, Modeling, and Verbs-Level Emulation with Implications for Federated Learning<br>
+                        <strong>Yuke Li</strong>, Zhonghao Chen, Xiaoyi Lu<br>
+                        [<a href="#">To Appear</a>]</div>
                 </li>
-                <li><span class="papertitle">[ICS '25]</span> Understanding the Idiosyncrasies of Emerging BlueField
-                    DPUs<br>
-                    Arjun Kashyap, <strong>Yuke Li</strong>, Darren Ng, Xiaoyi Lu<br>
-                    [<a href="#">To Appear</a>]
+                <li><span class="papertitle">ICS '26</span>
+                    <div class="paperinfo">PACER: A Userspace Network Rate Controller in MPI with Adaptive Compression for Parallel Applications<br>
+                        <strong>Yuke Li</strong>, Darren Ng, Arjun Kashyap, Sheng Di, Guanpeng Li, Xiaoyi Lu<br>
+                        [<a href="#">To Appear</a>]</div>
                 </li>
-                <li><span class="papertitle">[SIGMOD '24]</span> On the Feasibility and Benefits of Extensive
-                    Evaluation<br>
-                    <i>(I contributed to the RDMA experiment)</i><br>
-                    Yujie Hui, Miao Yu, Hao Qi, Yifan Gan, Tianxi Li, <strong>Yuke Li</strong>, Xueyuan Ren, Sixiang Ma,
-                    Xiaoyi Lu, Yang Wang<br>
-                    [<a href="https://dl.acm.org/doi/abs/10.1145/3677137">PAPER</a>]
+                <li><span class="papertitle">Research Poster, SC '25</span>
+                    <div class="paperinfo">Can Long-Haul RDMA Benefit Federated Learning?<br>
+                        <em>(Best Poster Candidate)</em><br>
+                        Zhonghao Chen, <strong>Yuke Li</strong>, Duo Zhang, Xiaoyi Lu<br>
+                        [<a href="#">Paper</a>]</div>
                 </li>
-                <li><span class="papertitle">[IPDPS '24]</span> Accelerating Lossy and Lossless Compression on Emerging
-                    BlueField DPU Architectures<br>
-                    <em>(Best Paper Nominee)</em><br>
-                    <strong>Yuke Li</strong>, Arjun Kashyap, Weicong Chen, Yanfei Guo, Xiaoyi Lu<br>
-                    [<a href="https://ieeexplore.ieee.org/document/10579226">PAPER</a>]
+                <li><span class="papertitle">HPDC '25</span>
+                    <div class="paperinfo">DPU-KV: On the Benefits of DPU Offloading for In-Memory
+                        Key-Value Stores at the Edge<br>
+                        Arjun Kashyap, <strong>Yuke Li</strong>, Xiaoyi Lu<br>
+                        [<a href="https://dl.acm.org/doi/10.1145/3731545.3731571">Paper</a>]</div>
                 </li>
-                <li><span class="papertitle">[SHDA Workshop, SC '23]</span> Pareto Optimization of CNN Models via
-                    Hardware-Aware Neural Architecture Search for Drainage Crossing Classification on Resource-Limited
-                    Devices<br>
-                    <strong>Yuke Li*</strong>, Jiwon Baik* (contributed equally), Md Marufi Rahman, Iraklis
-                    Anagnostopoulos, Ruopu Li, Tong Shu<br>
-                    [<a href="https://doi.org/10.1145/3624062.3624258">PAPER</a>]
+                <li><span class="papertitle">ICS '25</span>
+                    <div class="paperinfo">Understanding the Idiosyncrasies of Emerging BlueField
+                        DPUs<br>
+                        Arjun Kashyap, <strong>Yuke Li</strong>, Darren Ng, Xiaoyi Lu<br>
+                        [<a href="https://dl.acm.org/doi/10.1145/3721145.3725780">Paper</a>]</div>
                 </li>
-                <li><span class="papertitle">[Research Poster, SC '23]</span> Characterizing One-/Two-sided Designs in
-                    OpenSHMEM Collectives<br>
-                    <strong>Yuke Li</strong>, Yanfei Guo, Xiaoyi Lu<br>
-                    [<a
-                        href="https://sc23.supercomputing.org/proceedings/tech_poster/poster_files/rpost201s3-file2.pdf">POSTER</a>]
+                <li><span class="papertitle">SIGMOD '24</span>
+                    <div class="paperinfo">On the Feasibility and Benefits of Extensive
+                        Evaluation<br>
+                        <i>(I contributed to the RDMA experiment)</i><br>
+                        Yujie Hui, Miao Yu, Hao Qi, Yifan Gan, Tianxi Li, <strong>Yuke Li</strong>, Xueyuan Ren, Sixiang Ma,
+                        Xiaoyi Lu, Yang Wang<br>
+                        [<a href="https://dl.acm.org/doi/abs/10.1145/3677137">Paper</a>]</div>
                 </li>
-                <li><span class="papertitle">[IEEE Micro]</span> Compression Analysis for BlueField-2/3 DPUs: Lossy and
-                    Lossless Perspectives<br>
-                    <i>(An extended version of HOTI '23 paper)</i><br>
-                    <strong>Yuke Li</strong>, Arjun Kashyap, Yanfei Guo, Xiaoyi Lu<br>
-                    [<a href="https://www.computer.org/csdl/magazine/mi/2024/02/10364358/1SZ0tGbRT4A">PAPER</a>]
+                <li><span class="papertitle">IPDPS '24</span>
+                    <div class="paperinfo">Accelerating Lossy and Lossless Compression on Emerging
+                        BlueField DPU Architectures<br>
+                        <em>(Best Paper Nominee)</em><br>
+                        <strong>Yuke Li</strong>, Arjun Kashyap, Weicong Chen, Yanfei Guo, Xiaoyi Lu<br>
+                        [<a href="https://ieeexplore.ieee.org/document/10579226">Paper</a>]</div>
                 </li>
-                <li><span class="papertitle">[Hot Interconnects '23]</span> Characterizing Lossy and Lossless
-                    Compression on Emerging BlueField DPU Architectures<br>
-                    <strong>Yuke Li</strong>, Arjun Kashyap, Yanfei Guo, Xiaoyi Lu<br>
-                    [<a href="https://ieeexplore.ieee.org/document/10287290">PAPER</a>]
+                <li><span class="papertitle">SHDA Workshop, SC '23</span>
+                    <div class="paperinfo">Pareto Optimization of CNN Models via
+                        Hardware-Aware Neural Architecture Search for Drainage Crossing Classification on Resource-Limited
+                        Devices<br>
+                        <strong>Yuke Li*</strong>, Jiwon Baik* (contributed equally), Md Marufi Rahman, Iraklis
+                        Anagnostopoulos, Ruopu Li, Tong Shu<br>
+                        [<a href="https://doi.org/10.1145/3624062.3624258">Paper</a>]</div>
                 </li>
-                <li><span class="papertitle">[JCST '23]</span> xCCL: A Survey of Industry-Led Collective Communication
-                    Libraries for Deep Learning<br>
-                    Adam Weingram, <strong>Yuke Li</strong>, Hao Qi, Darren Ng, Liuyao Dai, Xiaoyi Lu<br>
-                    [<a href="https://link.springer.com/content/pdf/10.1007/s11390-023-2894-6.pdf">PAPER</a>]
+                <li><span class="papertitle">Research Poster, SC '23</span>
+                    <div class="paperinfo">Characterizing One-/Two-sided Designs in
+                        OpenSHMEM Collectives<br>
+                        <strong>Yuke Li</strong>, Yanfei Guo, Xiaoyi Lu<br>
+                        [<a
+                            href="https://sc23.supercomputing.org/proceedings/tech_poster/poster_files/rpost201s3-file2.pdf">Poster</a>]</div>
                 </li>
-                <li><span class="papertitle">[BenchCouncil Transactions '22]</span> Understanding Hot Interconnects with
-                    an Extensive Benchmark Survey<br>
-                    <strong>Yuke Li</strong>, Hao Qi, Gang Lu, Feng Jin, Yanfei Guo, Xiaoyi Lu<br>
-                    [<a href="https://doi.org/10.1016/j.tbench.2022.100074">PAPER</a>]
+                <li><span class="papertitle">IEEE Micro</span>
+                    <div class="paperinfo">Compression Analysis for BlueField-2/3 DPUs: Lossy and
+                        Lossless Perspectives<br>
+                        <i>(An extended version of HOTI '23 paper)</i><br>
+                        <strong>Yuke Li</strong>, Arjun Kashyap, Yanfei Guo, Xiaoyi Lu<br>
+                        [<a href="https://www.computer.org/csdl/magazine/mi/2024/02/10364358/1SZ0tGbRT4A">Paper</a>]</div>
+                </li>
+                <li><span class="papertitle">Hot Interconnects '23</span>
+                    <div class="paperinfo">Characterizing Lossy and Lossless
+                        Compression on Emerging BlueField DPU Architectures<br>
+                        <strong>Yuke Li</strong>, Arjun Kashyap, Yanfei Guo, Xiaoyi Lu<br>
+                        [<a href="https://ieeexplore.ieee.org/document/10287290">Paper</a>]</div>
+                </li>
+                <li><span class="papertitle">JCST '23</span>
+                    <div class="paperinfo">xCCL: A Survey of Industry-Led Collective Communication
+                        Libraries for Deep Learning<br>
+                        Adam Weingram, <strong>Yuke Li</strong>, Hao Qi, Darren Ng, Liuyao Dai, Xiaoyi Lu<br>
+                        [<a href="https://link.springer.com/content/pdf/10.1007/s11390-023-2894-6.pdf">Paper</a>]</div>
+                </li>
+                <li><span class="papertitle">BenchCouncil Transactions '22</span>
+                    <div class="paperinfo">Understanding Hot Interconnects with
+                        an Extensive Benchmark Survey<br>
+                        <strong>Yuke Li</strong>, Hao Qi, Gang Lu, Feng Jin, Yanfei Guo, Xiaoyi Lu<br>
+                        [<a href="https://doi.org/10.1016/j.tbench.2022.100074">Paper</a>]</div>
                 </li>
             </ul>
         </section>
 
         <section class="section">
-            <h2>Experience</h2>
-            <div class="entry"><span>Aug 2025 – Present</span>
-                <div>Student Researcher, ByteDance (Seed-Infra-Inference, Mentor: Zherui Liu)</div>
+            <h2 id="experience">Experience</h2>
+            <div class="entry"><span>Aug 2025 – Jan 2026</span>
+                <div>Student Researcher, ByteDance (Seed-Infra-Inference, Mentor: Zherui Liu. In collaboration with the High Speed Network team)</div>
             </div>
             <div class="entry"><span>May 2025 – Aug 2025</span>
                 <div>Software Engineering Intern, ByteDance (Seed-Infra-Inference, Mentor: Zherui Liu)</div>
@@ -251,17 +385,11 @@
         </section>
 
         <section class="section">
-
-
-
-
-
-        <section class="section">
-            <h2>Service</h2>
-            <div class="entry"><span>HOTI '23, '24</span>
+            <h2 id="service">Service</h2>
+            <div class="entry"><span>HOTI '23-'24</span>
                 <div>Technical Program Committee</div>
             </div>
-            <div class="entry"><span>HOTI '25</span>
+            <div class="entry"><span>HOTI '25-'26</span>
                 <div>Web Chair</div>
             </div>
             <div class="entry"><span>Bench '22</span>
@@ -272,20 +400,8 @@
             </div>
         </section>
 
-        <section class="section">
-            <h2>Awards</h2>
-            <div class="entry"><span>SIGHPC Travel Grant</span>
-                <div>SC '22</div>
-            </div>
-            <div class="entry"><span>IEEE TCPP Travel Award</span>
-                <div>IPDPS '24</div>
-            </div>
-            <div class="entry"><span>ISCA Student Travel Award</span>
-                <div>ISCA '25</div>
-            </div>
-        </section>
-
         <footer>
+            <p>&copy; 2026 Yuke Li</p>
             <div class="hidden">
                 <a href="https://clustrmaps.com/site/1bs98" title="Visit tracker">
                     <img src="//www.clustrmaps.com/map_v2.png?d=h7gWLUjAdN2SU9rug5aiFBE910Aw_mkbjaepTSZFxbo&cl=ffffff"
@@ -297,5 +413,3 @@
 </body>
 
 </html>
-
-
